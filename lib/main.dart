@@ -18,23 +18,23 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.purpleAccent,
         fontFamily: 'Quicksand',
         textTheme: ThemeData.light().textTheme.copyWith(
-          headline6: TextStyle(
-            fontFamily: 'Opensans',
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-          ),
-          button: TextStyle(
-            color: Colors.white,
-          ),
-        ),
+              headline6: TextStyle(
+                fontFamily: 'Opensans',
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+              button: TextStyle(
+                color: Colors.white,
+              ),
+            ),
         appBarTheme: AppBarTheme(
           textTheme: ThemeData.light().textTheme.copyWith(
-            headline6: TextStyle(
-              fontFamily: 'Opensans',
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-            ),
-          ),
+                headline6: TextStyle(
+                  fontFamily: 'Opensans',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+              ),
         ),
       ),
       home: MyHomePage(),
@@ -59,7 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return _userTransactions.where((transaction) {
       return transaction.date.isAfter(
         DateTime.now().subtract(
-          Duration(days:7),
+          Duration(days: 7),
         ),
       );
     }).toList();
@@ -86,13 +86,23 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  void _deleteTransaction(String id) {
+    setState(() {
+      _userTransactions.removeWhere((transaction) => transaction.id == id);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Personal Expenses'),
         backgroundColor: Theme.of(context).primaryColor,
-        actions: <Widget>[IconButton(onPressed: () => _startAddNewTransaction(context), icon: Icon(Icons.add))],
+        actions: <Widget>[
+          IconButton(
+              onPressed: () => _startAddNewTransaction(context),
+              icon: Icon(Icons.add))
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -100,12 +110,15 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Chart(_recentTransactions),
-            TransactionList(_userTransactions),
+            TransactionList(_userTransactions, _deleteTransaction),
           ],
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: FloatingActionButton(child: Icon(Icons.add), onPressed:  () => _startAddNewTransaction(context),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () => _startAddNewTransaction(context),
+        backgroundColor: Theme.of(context).primaryColor,
       ),
     );
   }
